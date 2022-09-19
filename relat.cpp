@@ -19,9 +19,9 @@ int main()
     //пару условий перед циклом
     while (keep_pw)
     {
-        cout << "Введите пароль: ";
+        cout << "Введите пароль от аккаунта: ";
         cin >> aPw;
-        if(aPw == "wood")
+        if(aPw == "test")
         {
             keep_pw = false;
             keep_going = true;
