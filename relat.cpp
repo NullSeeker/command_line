@@ -10,10 +10,32 @@ int main()
 {
     // переменные
     string aBuf;
-    char Foo;
+    string aPw;
     bool keep_going;
-    keep_going = true;
-
+    keep_going = false;
+    bool keep_pw;
+    keep_pw = true;
+    
+    //пару условий перед циклом
+    while (keep_pw)
+    {
+        cout << "Введите пароль: ";
+        cin >> aPw;
+        if(aPw == "wood")
+        {
+            keep_pw = false;
+            keep_going = true;
+        }
+        else
+        {
+            cout << "Пароль не верный попробуйте снова\n";
+            keep_going = false;
+            keep_pw = true;
+        }
+        
+    
+    }
+    
     // цикл
     while (keep_going)
     {
@@ -23,26 +45,26 @@ int main()
         cout << "Введите сообщение: ";
         cin >> aBuf;
 
-        // условие "если"(в данном случае: если переменная = слову help то выполняеься код ниже.)
+        // условие "если"(в данном случае: если переменная = слову help то выполняться код ниже.)
         if(aBuf == "помощь")
         {
             // \n перенёс на другую строку
-            cout << "выход(exit)\n";
+            cout << "выход\n";
         }
         // втрое условие
         if (aBuf == "help")
         {
-            cout << "выход(exit)\n";
-        }
-        
-        if(aBuf == "exit")
-        {
-            keep_going = false;
+            cout << "выход\n";
         }
     
         if(aBuf == "выход")
         {
             keep_going = false;
+        }
+    
+        if(aBuf != "выход")
+        {
+            cout << "Сообщение отправлено!\n";
         }
     }
     
