@@ -1,6 +1,7 @@
 // подключённые библиотеки
 #include <iostream>
 #include <string>
+#include "func.h"
 
 // наме спайсы
 using namespace std;
@@ -69,4 +70,5 @@ int main()
             cout << "Сообщение отправлено!\n";
         }
     }
+
 }
