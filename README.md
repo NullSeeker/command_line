@@ -9,5 +9,5 @@ cd command_line
 ./relat
 ```
 # password
-- WOOD
+- test
 
