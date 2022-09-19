@@ -25,6 +25,8 @@ int main()
         {
             keep_pw = false;
             keep_going = true;
+            cout << "Вход..";
+            cout << "По поводу своих паролей писать в дискорд\n";
         }
         else
         {
