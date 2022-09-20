@@ -9,6 +9,7 @@ using namespace std;
 // главная функция(можно и без неё)
 int main()
 {
+    
     // переменные
     string aBuf;
     string aPw;
@@ -16,7 +17,8 @@ int main()
     keep_going = false;
     bool keep_pw;
     keep_pw = true;
-    
+
+
     // вывод перед циклом
     cout << "Если у вас нету аккаунта то ввелите команду 'регистрация'\n";
     
