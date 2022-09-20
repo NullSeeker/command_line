@@ -1,6 +1,7 @@
 // подключённые библиотеки
 #include <iostream>
 #include <string>
+#include <ncurses.h>
 
 // наме спайсы
 using namespace std;
@@ -11,13 +12,10 @@ int main()
     // переменные
     string aBuf;
     string aPw;
-    string aReg;
     bool keep_going;
     keep_going = false;
     bool keep_pw;
     keep_pw = true;
-    bool keep_reg;
-    keep_reg = false;
     
     // вывод перед циклом
     cout << "Если у вас нету аккаунта то ввелите команду 'регистрация'\n";
@@ -27,24 +25,6 @@ int main()
         cout << "Введите пароль от аккаунта: ";
         cin >> aPw;
         
-        // новая команнда
-        if(aPw == "регистрация")
-        {
-            keep_reg = true;
-            while(keep_reg)
-            {
-                cout << "Введите новый пароль: ";
-                cin >> aReg;
-
-                // команды
-                if(aReg == aReg)
-                {
-                    keep_reg = false;
-                    keep_pw = false;
-                    keep_going = true;
-                }
-            }
-        }
         // пароль
         if(aPw == "test")
         {
@@ -55,11 +35,18 @@ int main()
         }
         else
         {
-            cout << "Пароль не верный попробуйте снова\n";
-            keep_going = false;
-            keep_pw = true;
+                cout << "Пароль не верный попробуйте снова\n";
+                keep_going = false;
+                keep_pw = true;
+  
         }
         
+        if(aPw == "выход")
+        {
+            keep_pw = false;
+            keep_going = false;
+        }
+    
     
     }
     
