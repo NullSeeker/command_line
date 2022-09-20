@@ -1,7 +1,6 @@
 // подключённые библиотеки
 #include <iostream>
 #include <string>
-#include "func.h"
 
 // наме спайсы
 using namespace std;
@@ -12,21 +11,46 @@ int main()
     // переменные
     string aBuf;
     string aPw;
+    string aReg;
     bool keep_going;
     keep_going = false;
     bool keep_pw;
     keep_pw = true;
+    bool keep_reg;
+    keep_reg = false;
     
-    //пару условий перед циклом
+    // вывод перед циклом
+    cout << "Если у вас нету аккаунта то ввелите команду 'регистрация'\n";
+    
     while (keep_pw)
     {
         cout << "Введите пароль от аккаунта: ";
         cin >> aPw;
+        
+        // новая команнда
+        if(aPw == "регистрация")
+        {
+            keep_reg = true;
+            while(keep_reg)
+            {
+                cout << "Введите новый пароль: ";
+                cin >> aReg;
+
+                // команды
+                if(aReg == aReg)
+                {
+                    keep_reg = false;
+                    keep_pw = false;
+                    keep_going = true;
+                }
+            }
+        }
+        // пароль
         if(aPw == "test")
         {
             keep_pw = false;
             keep_going = true;
-            cout << "Вход..";
+            cout << "Вход..\n";
             cout << "По поводу своих паролей писать в дискорд\n";
         }
         else
@@ -52,12 +76,13 @@ int main()
         if(aBuf == "помощь")
         {
             // \n перенёс на другую строку
-            cout << "выход\n";
+            cout << "Команды: выход\n";
         }
+        
         // втрое условие
         if (aBuf == "help")
         {
-            cout << "выход\n";
+            cout << "Команды: выход\n";
         }
     
         if(aBuf == "выход")
@@ -70,5 +95,4 @@ int main()
             cout << "Сообщение отправлено!\n";
         }
     }
-
 }
