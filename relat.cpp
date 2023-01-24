@@ -84,7 +84,7 @@ int main()
 
         if(aBuf == "дискорд")
         {
-            cout << "ChillWood#0145";
+            cout << "ChillWood#5180\n";
         }    
     
     }
