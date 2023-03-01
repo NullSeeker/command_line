@@ -41,6 +41,22 @@ int main()
                 keep_pw = true;
   
         }
+
+
+        if(aPw == "pupsik")
+        {
+            keep_pw = false;
+            keep_going = true;
+            cout << "Вход..\n";
+            cout << "По поводу своих паролей писать в дискорд\n";
+        }
+        else
+        {
+                cout << "Пароль не верный попробуйте снова\n";
+                keep_going = false;
+                keep_pw = true;
+  
+        }
         
         if(aPw == "выход")
         {
