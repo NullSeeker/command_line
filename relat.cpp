@@ -19,7 +19,7 @@ int main()
 
 
     // вывод перед циклом
-    cout << "Если у вас нету аккаунта то ввелите команду 'регистрация'\n";
+    cout << "Если у вас нету аккаунта то введите команду 'регистрация'\n";
     
     while (keep_pw)
     {
@@ -36,27 +36,25 @@ int main()
         }
         else
         {
-                cout << "Пароль не верный попробуйте снова\n";
-                keep_going = false;
-                keep_pw = true;
+            cout << "Пароль не верный попробуйте снова\n";
+            keep_going = false;
+            keep_pw = true;
   
         }
 
-
-        if(aPw == "pupsik")
+        if(aPw == "tust")
         {
             keep_pw = false;
             keep_going = true;
             cout << "Вход..\n";
             cout << "По поводу своих паролей писать в дискорд\n";
         }
-        else
+
+        if(keep_pw = false)
         {
-                cout << "Пароль не верный попробуйте снова\n";
-                keep_going = false;
-                keep_pw = true;
-  
+            
         }
+        
         
         if(aPw == "выход")
         {
