@@ -1,7 +1,7 @@
-# command_line
+# Command_line
 This is a convenient command-line replacement for Linux. In the future it will appear on windows
 
-# building linux
+# Building linux
 
 ```
 git clone git@github.com:ChilliWood/command_line.git
@@ -9,6 +9,7 @@ cd command_line
 ./build
 ./relat
 ```
-# password
-- test
+
+# Register
+Added the ability to register your account. For all questions, write to support
 
