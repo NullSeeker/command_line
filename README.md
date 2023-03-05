@@ -13,3 +13,10 @@ cd command_line
 # Register
 Added the ability to register your account. For all questions, write to support
 
+
+# Library
+
+```
+sudo apt install g++
+sudo apt install gcc
+```
