@@ -1,5 +1,5 @@
 # Command_line
-This is a convenient command-line replacement for Linux. In the future it will appear on windows
+This is a convenient command-line replacement for Linux. In the future it will appear on windows(Development for the Windows operating system)
 
 # Building linux
 
