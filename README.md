@@ -10,6 +10,15 @@ cd command_line
 ./relat
 ```
 
+#Building MacOS
+
+```
+brew install cmake
+git clone https://github.com/ChilliWood/command_line.git
+./build
+./relat
+```
+
 # Register
 Added the ability to register your account. For all questions, write to support
 
