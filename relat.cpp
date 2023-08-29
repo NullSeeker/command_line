@@ -5,6 +5,19 @@
 // наме спайсы
 using namespace std;
 
+class CRegister {
+    
+public:
+    bool m_Register;
+    void Register();
+    
+private:
+    int m_Accounts;
+};
+
+CRegister m_AccountData;
+
+
 // главная функция(можно и без неё)
 int main()
 {
@@ -27,6 +40,8 @@ int main()
         cin >> aPw;
         
         // пароль
+        
+        
         if(aPw == "test")
         {
             keep_pw = false;
@@ -55,7 +70,12 @@ int main()
         if(aPw == "выход")
         {
             keep_pw = false;
-            keep_going = false;
+        }
+        
+        if (aPw == "register") {
+        
+            m_AccountData.m_Register = true;
+            keep_pw = false;
         }
     
     
