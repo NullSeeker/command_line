@@ -1,5 +1,5 @@
 # Command_line
-This is a convenient command-line replacement for Linux. In the future it will appear on windows (Development for the Windows operating system)
+This is a convenient command-line replacement for Linux and MacOS. In the future it will appear on windows (Development for the Windows operating system)
 
 # Building linux
 
@@ -10,7 +10,7 @@ cd command_line
 ./relat
 ```
 
-#Building MacOS
+# Building MacOS
 
 ```
 brew install cmake
