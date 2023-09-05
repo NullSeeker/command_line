@@ -23,13 +23,14 @@ int main()
 {
     
     // переменные
+    string aReg;
     string aBuf;
     string aPw;
     bool keep_going;
     keep_going = false;
     bool keep_pw;
     keep_pw = true;
-
+    m_AccountData.m_Register = false;
 
     // вывод перед циклом
     cout << "Если у вас нету аккаунта то введите команду 'register'\n";
@@ -57,6 +58,13 @@ int main()
   
         }
 
+        if (m_AccountData.m_Register) {
+            keep_pw = false;
+            keep_going = true;
+            cout << "Вход..\n";
+            cout << "По поводу своих паролей писать в дискорд\n";
+        }
+        
         if(aPw == "tust")
         {
             keep_pw = false;
@@ -78,6 +86,20 @@ int main()
             keep_pw = false;
         }
     
+        while (m_AccountData.m_Register) {
+            
+            cout << "Введите новый пароль: ";
+            cin >> aReg;
+            
+            cout << "Спасибо за регестрацию, нажмите 'н' что бы выйти\n";
+            
+            if (aReg == "н"){
+                m_AccountData.m_Register = false;
+                keep_pw = true;
+                
+            }
+            
+        }
     
     }
     
