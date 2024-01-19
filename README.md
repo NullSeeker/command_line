@@ -13,7 +13,6 @@ cd command_line
 # Building MacOS
 
 ```
-brew install cmake
 git clone https://github.com/ChilliWood/command_line.git
 ./build
 ./relat
@@ -23,9 +22,16 @@ git clone https://github.com/ChilliWood/command_line.git
 Added the ability to register your account. For all questions, write to support
 
 
-# Library
+# Library linux
 
 ```
 sudo apt install g++
 sudo apt install gcc
+```
+
+# Library MacOS
+
+```
+brew install gcc
+brew install g++
 ```
