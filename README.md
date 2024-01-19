@@ -19,7 +19,7 @@ git clone https://github.com/ChilliWood/command_line.git
 ```
 
 # Register
-Added the ability to register your account. For all questions, write to support
+Added the ability to register your account. For all questions, write to support. So far, the accounts are not written to the database, at the moment it is happening locally.
 
 
 # Library linux
