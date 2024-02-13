@@ -34,7 +34,7 @@ int main()
     m_AccountData.m_Register = false;
 
     // вывод перед циклом
-    cout << "Если у вас нету аккаунта то введите команду 'register'\n";
+    cout << "Если у вас нету аккаунта то введите команду 'reg'\n";
 
     while (keep_pw)
     {
