@@ -2,6 +2,8 @@
 #include <fstream>
 #include <vector>
 #include <ctime>
+#include <cstdlib>
+#include <algorithm>
 
 using namespace std;
 
@@ -9,7 +11,7 @@ class Account {
 public:
     string username;
     string password;
-    string role; // user или admin
+    string role;
 
     Account(string uname, string pwd, string r) {
         username = uname;
@@ -20,7 +22,6 @@ public:
 
 vector<Account> accounts;
 
-// Загрузка аккаунтов из файла
 void loadAccounts() {
     ifstream file("accounts.txt");
     if (!file.is_open()) return;
@@ -32,7 +33,6 @@ void loadAccounts() {
     file.close();
 }
 
-// Сохранение аккаунтов в файл
 void saveAccounts() {
     ofstream file("accounts.txt");
     for (const auto& acc : accounts) {
@@ -41,16 +41,14 @@ void saveAccounts() {
     file.close();
 }
 
-// Регистрация аккаунта
 Account* registerAccount() {
     string username, password;
     cout << "Введите логин: ";
     cin >> username;
 
-    // Проверка, существует ли аккаунт
     for (const auto& acc : accounts) {
         if (acc.username == username) {
-            cout << "Ошибка: этот логин уже занят!\n";
+            cout << "❌ Ошибка: этот логин уже занят!\n";
             return nullptr;
         }
     }
@@ -65,7 +63,6 @@ Account* registerAccount() {
     return &accounts.back();
 }
 
-// Вход в систему
 Account* login() {
     string username, password;
     cout << "Введите логин: ";
@@ -84,7 +81,6 @@ Account* login() {
     return nullptr;
 }
 
-// Показать всех пользователей (для админов)
 void showAccounts() {
     cout << "📜 Список всех пользователей:\n";
     for (const auto& acc : accounts) {
@@ -92,7 +88,6 @@ void showAccounts() {
     }
 }
 
-// Удаление пользователя (для админов)
 void deleteUser() {
     string username;
     cout << "Введите логин пользователя для удаления: ";
@@ -110,7 +105,6 @@ void deleteUser() {
     cout << "❌ Ошибка: пользователь не найден.\n";
 }
 
-// Изменение роли пользователя (для админов)
 void setPermission() {
     string username, newRole;
     cout << "Введите логин пользователя: ";
@@ -134,30 +128,53 @@ void setPermission() {
     cout << "❌ Ошибка: пользователь не найден.\n";
 }
 
-// Смена пароля
-void changePassword(Account* user) {
-    string newPassword;
-    cout << "Введите новый пароль: ";
-    cin >> newPassword;
-
-    user->password = newPassword;
-    saveAccounts();
-    cout << "✅ Пароль успешно изменён!\n";
-}
-
-// Вывод текущего времени
 void showTimestamp() {
     time_t now = time(0);
     char* dt = ctime(&now);
     cout << "🕒 Текущее время: " << dt;
 }
 
-// Очистка экрана (работает только на Windows)
-void clearScreen() {
-    system("cls");
+void randomNumber() {
+    cout << "🎲 Случайное число: " << (rand() % 100 + 1) << endl;
 }
 
-// Цикл команд после входа
+void flipCoin() {
+    cout << "🪙 Результат: " << (rand() % 2 ? "Орёл" : "Решка") << endl;
+}
+
+void joke() {
+    string jokes[] = {
+        "Почему программисты не боятся темноты? Потому что в темноте меньше багов!",
+        "Байт укусил бит, а бит ответил: 'Ай!'",
+        "Ошибка 404: Шутка не найдена!"
+    };
+    cout << "😂 " << jokes[rand() % 3] << endl;
+}
+
+void reverseText() {
+    string text;
+    cin.ignore();
+    getline(cin, text);
+    reverse(text.begin(), text.end());
+    cout << "🔄 Перевёрнутый текст: " << text << endl;
+}
+
+void toUpperCase() {
+    string text;
+    cin.ignore();
+    getline(cin, text);
+    transform(text.begin(), text.end(), text.begin(), ::toupper);
+    cout << "🔠 В верхнем регистре: " << text << endl;
+}
+
+void toLowerCase() {
+    string text;
+    cin.ignore();
+    getline(cin, text);
+    transform(text.begin(), text.end(), text.begin(), ::tolower);
+    cout << "🔡 В нижнем регистре: " << text << endl;
+}
+
 void commandLoop(Account* user) {
     bool loggedIn = true;
 
@@ -168,67 +185,54 @@ void commandLoop(Account* user) {
 
         if (command == "help") {
             cout << "📜 Доступные команды:\n";
-            cout << "🔹 help — список команд\n";
-            cout << "🔹 status — информация о вашем аккаунте\n";
-            cout << "🔹 changepw — сменить пароль\n";
-            cout << "🔹 echo <текст> — повторить текст\n";
+            cout << "🔹 whoami — ваш логин и роль\n";
             cout << "🔹 timestamp — текущее время\n";
-            cout << "🔹 clear — очистить экран (только Windows)\n";
+            cout << "🔹 random — случайное число\n";
+            cout << "🔹 flip — подбрасывание монетки\n";
+            cout << "🔹 joke — случайная шутка\n";
+            cout << "🔹 reverse — перевернуть текст\n";
+            cout << "🔹 upper — в верхний регистр\n";
+            cout << "🔹 lower — в нижний регистр\n";
             cout << "🔹 exit — выйти из аккаунта\n";
             if (user->role == "admin") {
                 cout << "🔹 showusers — показать всех пользователей\n";
                 cout << "🔹 deluser — удалить пользователя\n";
                 cout << "🔹 setperm — изменить права пользователя\n";
             }
-        } else if (command == "status") {
-            cout << "👤 Логин: " << user->username << "\n";
-            cout << "🛠 Роль: " << user->role << "\n";
-        } else if (command == "changepw") {
-            changePassword(user);
-        } else if (command == "echo") {
-            string message;
-            getline(cin >> ws, message);
-            cout << "📢 " << message << endl;
-        } else if (command == "timestamp") {
-            showTimestamp();
-        } else if (command == "clear") {
-            clearScreen();
-        } else if (command == "exit") {
-            loggedIn = false;
-            cout << "🚪 Выход...\n";
-        } else if (command == "showusers" && user->role == "admin") {
-            showAccounts();
-        } else if (command == "deluser" && user->role == "admin") {
-            deleteUser();
-        } else if (command == "setperm" && user->role == "admin") {
-            setPermission();
-        } else {
-            cout << "❌ Неизвестная команда!\n";
-        }
+        } else if (command == "whoami") {
+            cout << "👤 Логин: " << user->username << " | Роль: " << user->role << endl;
+        } else if (command == "random") randomNumber();
+        else if (command == "flip") flipCoin();
+        else if (command == "joke") joke();
+        else if (command == "reverse") reverseText();
+        else if (command == "upper") toUpperCase();
+        else if (command == "lower") toLowerCase();
+        else if (command == "exit") loggedIn = false;
+        else cout << "❌ Неизвестная команда!\n";
     }
 }
 
 int main() {
+    srand(time(0));  
     loadAccounts();
 
-    while (true) {
-        cout << "\n🔹 1. Вход\n🔹 2. Регистрация\n🔹 3. Выход\n➡ Выбор: ";
-        int choice;
-        cin >> choice;
+    cout << "🔹 Добро пожаловать в систему аккаунтов!\n";
+    cout << "Выберите действие: login / register\n";
 
-        if (choice == 1) {
-            Account* user = login();
-            if (user) commandLoop(user);
-        } else if (choice == 2) {
-            Account* newUser = registerAccount();
-            if (newUser) commandLoop(newUser);
-        } else if (choice == 3) {
-            cout << "👋 До свидания!\n";
-            break;
-        } else {
-            cout << "❌ Ошибка: неверный ввод!\n";
-        }
+    string choice;
+    cin >> choice;
+
+    Account* user = nullptr;
+
+    if (choice == "login") {
+        user = login();
+    } else if (choice == "register") {
+        user = registerAccount();
+    } else {
+        cout << "❌ Неизвестная команда!\n";
+        return 0;
     }
 
+    if (user) commandLoop(user);
     return 0;
 }
