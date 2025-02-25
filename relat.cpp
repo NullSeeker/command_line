@@ -1,145 +1,193 @@
-// подключённые библиотеки
 #include <iostream>
-#include <string>
+#include <fstream>
+#include <vector>
 
-// наме спайсы
 using namespace std;
 
-class CRegister {
-
+class Account {
 public:
-    bool m_Register;
-    void Register();
-    string m_Accounts;
+    string username;
+    string password;
+    string role; // user или admin
 
-private:
-      string m_Password;
+    Account(string uname, string pwd, string r) {
+        username = uname;
+        password = pwd;
+        role = r;
+    }
 };
 
-CRegister m_AccountData;
+vector<Account> accounts;
 
+// Загрузка аккаунтов из файла
+void loadAccounts() {
+    ifstream file("accounts.txt");
+    if (!file.is_open()) return;
 
-// главная функция(можно и без неё)
-int main()
-{
+    string username, password, role;
+    while (file >> username >> password >> role) {
+        accounts.push_back(Account(username, password, role));
+    }
+    file.close();
+}
 
-    // переменные
-    string aReg;
-    string aBuf;
-    string aPw;
-    bool keep_going;
-    keep_going = false;
-    bool keep_pw;
-    keep_pw = true;
-    m_AccountData.m_Register = false;
+// Сохранение аккаунтов в файл
+void saveAccounts() {
+    ofstream file("accounts.txt");
+    for (const auto& acc : accounts) {
+        file << acc.username << " " << acc.password << " " << acc.role << endl;
+    }
+    file.close();
+}
 
-    // вывод перед циклом
-    cout << "Если у вас нету аккаунта то введите команду 'reg'\n";
+// Регистрация аккаунта
+Account* registerAccount() {
+    string username, password;
+    cout << "Введите логин: ";
+    cin >> username;
 
-    while (keep_pw)
-    {
-        cout << "Введите пароль от аккаунта: ";
-        cin >> aPw;
-
-        // пароль
-
-
-        if(aPw == "test")
-        {
-            keep_pw = false;
-            keep_going = true;
-            cout << "Вход..\n";
-            cout << "По поводу своих паролей писать в дискорд\n";
+    // Проверка, существует ли аккаунт
+    for (const auto& acc : accounts) {
+        if (acc.username == username) {
+            cout << "Ошибка: этот логин уже занят!\n";
+            return nullptr;
         }
-        else
-        {
-            cout << "Пароль не верный попробуйте снова\n";
-            keep_going = false;
-            keep_pw = true;
+    }
 
+    cout << "Введите пароль: ";
+    cin >> password;
+
+    // По умолчанию роль "user"
+    accounts.push_back(Account(username, password, "user"));
+    saveAccounts();
+
+    cout << "✅ Аккаунт успешно создан!\n";
+    return &accounts.back();
+}
+
+// Вход в систему
+Account* login() {
+    string username, password;
+    cout << "Введите логин: ";
+    cin >> username;
+    cout << "Введите пароль: ";
+    cin >> password;
+
+    for (auto& acc : accounts) {
+        if (acc.username == username && acc.password == password) {
+            cout << "✅ Вход выполнен!\n";
+            return &acc;
         }
+    }
 
-        if(aPw ==m_AccountData.m_Accounts)
-        {
-          keep_pw = false;
-          keep_going = true;
-          cout << "Вход..\n";
-          cout << "По поводу своих паролей писать в дискорд\n";
+    cout << "❌ Ошибка: неверный логин или пароль!\n";
+    return nullptr;
+}
+
+// Показать всех пользователей (для админов)
+void showAccounts() {
+    cout << "📜 Список всех пользователей:\n";
+    for (const auto& acc : accounts) {
+        cout << "👤 Логин: " << acc.username << " | Роль: " << acc.role << endl;
+    }
+}
+
+// Удаление пользователя (для админов)
+void deleteUser() {
+    string username;
+    cout << "Введите логин пользователя для удаления: ";
+    cin >> username;
+
+    for (auto it = accounts.begin(); it != accounts.end(); ++it) {
+        if (it->username == username) {
+            accounts.erase(it);
+            saveAccounts();
+            cout << "✅ Пользователь удалён.\n";
+            return;
         }
+    }
 
+    cout << "❌ Ошибка: пользователь не найден.\n";
+}
 
+// Изменение роли пользователя (для админов)
+void setPermission() {
+    string username, newRole;
+    cout << "Введите логин пользователя: ";
+    cin >> username;
+    cout << "Введите новую роль (user/admin): ";
+    cin >> newRole;
 
-        if(aPw == "tust")
-        {
-            keep_pw = false;
-            keep_going = true;
-            cout << "Вход..\n";
-            cout << "По поводу своих паролей писать в дискорд\n";
+    for (auto& acc : accounts) {
+        if (acc.username == username) {
+            if (newRole == "user" || newRole == "admin") {
+                acc.role = newRole;
+                saveAccounts();
+                cout << "✅ Роль пользователя обновлена!\n";
+            } else {
+                cout << "❌ Ошибка: роль должна быть 'user' или 'admin'.\n";
+            }
+            return;
         }
+    }
 
+    cout << "❌ Ошибка: пользователь не найден.\n";
+}
 
+// Цикл команд после входа
+void commandLoop(Account* user) {
+    bool loggedIn = true;
 
-        if(aPw == "exit")
-        {
-            keep_pw = false;
+    while (loggedIn) {
+        cout << "\n💻 Введите команду (help для списка): ";
+        string command;
+        cin >> command;
+
+        if (command == "help") {
+            cout << "📜 Доступные команды:\n";
+            cout << "🔹 help — список команд\n";
+            cout << "🔹 exit — выйти из аккаунта\n";
+            if (user->role == "admin") {
+                cout << "🔹 showusers — показать всех пользователей\n";
+                cout << "🔹 deluser — удалить пользователя\n";
+                cout << "🔹 setperm — изменить права пользователя\n";
+            }
+        } else if (command == "exit") {
+            loggedIn = false;
+            cout << "🚪 Выход...\n";
+        } else if (command == "showusers" && user->role == "admin") {
+            showAccounts();
+        } else if (command == "deluser" && user->role == "admin") {
+            deleteUser();
+        } else if (command == "setperm" && user->role == "admin") {
+            setPermission();
+        } else {
+            cout << "❌ Неизвестная команда!\n";
         }
+    }
+}
 
-        if (aPw == "reg") {
+int main() {
+    loadAccounts();
 
-            m_AccountData.m_Register = true;
-            keep_pw = false;
-        }
+    while (true) {
+        cout << "\n🔹 1. Вход\n🔹 2. Регистрация\n🔹 3. Выход\n➡ Выбор: ";
+        int choice;
+        cin >> choice;
 
-        while (m_AccountData.m_Register) {
-
-            cout << "Добро пожаловать в регестрацию\n";
-            cout << "Введите новый пароль: ";
-            cin >> aReg;
-
-            m_AccountData.m_Accounts = aReg;
-
-            cout << "Спасибо за регестрацию, нажмите 'н' что бы выйти\n";
-
-            keep_pw = true;
-            m_AccountData.m_Register = false;
+        if (choice == 1) {
+            Account* user = login();
+            if (user) commandLoop(user);
+        } else if (choice == 2) {
+            Account* newUser = registerAccount();
+            if (newUser) commandLoop(newUser); // Сразу после регистрации входим
+        } else if (choice == 3) {
+            cout << "👋 До свидания!\n";
             break;
-
+        } else {
+            cout << "❌ Ошибка: неверный ввод!\n";
         }
-
     }
 
-
-
-    // цикл
-    while (keep_going)
-    {
-        /* cout вывод сообщения
-        cin ввод переменной(делает переменную запоминающей)*/
-
-        cout << "Введите сообщение: ";
-        cin >> aBuf;
-
-        // условие "если"(в данном случае: если переменная = слову  то выполняться код ниже.)
-        if(aBuf == "help")
-        {
-            // \n перенёс на другую строку
-            cout << "Команды: exit, discord, reg( in lo.\n";
-        }
-
-        if(aBuf == "exit")
-        {
-            keep_going = false;
-        }
-
-        if(aBuf == "reg")
-        {
-            cout << "Регистрация: при входе нужно ввести слово \n";
-        }
-
-        if(aBuf == "discrod")
-        {
-            cout << "saintphnx.";
-        }
-
-    }
+    return 0;
 }
