@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <ctime>
 
 using namespace std;
 
@@ -57,7 +58,6 @@ Account* registerAccount() {
     cout << "Введите пароль: ";
     cin >> password;
 
-    // По умолчанию роль "user"
     accounts.push_back(Account(username, password, "user"));
     saveAccounts();
 
@@ -134,6 +134,29 @@ void setPermission() {
     cout << "❌ Ошибка: пользователь не найден.\n";
 }
 
+// Смена пароля
+void changePassword(Account* user) {
+    string newPassword;
+    cout << "Введите новый пароль: ";
+    cin >> newPassword;
+
+    user->password = newPassword;
+    saveAccounts();
+    cout << "✅ Пароль успешно изменён!\n";
+}
+
+// Вывод текущего времени
+void showTimestamp() {
+    time_t now = time(0);
+    char* dt = ctime(&now);
+    cout << "🕒 Текущее время: " << dt;
+}
+
+// Очистка экрана (работает только на Windows)
+void clearScreen() {
+    system("cls");
+}
+
 // Цикл команд после входа
 void commandLoop(Account* user) {
     bool loggedIn = true;
@@ -146,12 +169,30 @@ void commandLoop(Account* user) {
         if (command == "help") {
             cout << "📜 Доступные команды:\n";
             cout << "🔹 help — список команд\n";
+            cout << "🔹 status — информация о вашем аккаунте\n";
+            cout << "🔹 changepw — сменить пароль\n";
+            cout << "🔹 echo <текст> — повторить текст\n";
+            cout << "🔹 timestamp — текущее время\n";
+            cout << "🔹 clear — очистить экран (только Windows)\n";
             cout << "🔹 exit — выйти из аккаунта\n";
             if (user->role == "admin") {
                 cout << "🔹 showusers — показать всех пользователей\n";
                 cout << "🔹 deluser — удалить пользователя\n";
                 cout << "🔹 setperm — изменить права пользователя\n";
             }
+        } else if (command == "status") {
+            cout << "👤 Логин: " << user->username << "\n";
+            cout << "🛠 Роль: " << user->role << "\n";
+        } else if (command == "changepw") {
+            changePassword(user);
+        } else if (command == "echo") {
+            string message;
+            getline(cin >> ws, message);
+            cout << "📢 " << message << endl;
+        } else if (command == "timestamp") {
+            showTimestamp();
+        } else if (command == "clear") {
+            clearScreen();
         } else if (command == "exit") {
             loggedIn = false;
             cout << "🚪 Выход...\n";
@@ -180,7 +221,7 @@ int main() {
             if (user) commandLoop(user);
         } else if (choice == 2) {
             Account* newUser = registerAccount();
-            if (newUser) commandLoop(newUser); // Сразу после регистрации входим
+            if (newUser) commandLoop(newUser);
         } else if (choice == 3) {
             cout << "👋 До свидания!\n";
             break;
