@@ -1,4 +1,4 @@
-# Command_line
+# Command_line fun
 This is a convenient command-line replacement for Linux and MacOS. In the future it will appear on windows (Development for the Windows operating system)
 
 # Building linux
